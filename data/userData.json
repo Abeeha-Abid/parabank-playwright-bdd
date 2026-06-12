@@ -1,0 +1,18 @@
+{
+  "register": {
+    "firstName": "Ali",
+    "lastName": "Alaya",
+    "street": "bedian road",
+    "city": "Lahore",
+    "state": "punjab",
+    "zipCode": "540000",
+    "phone": "30016",
+    "ssn": "1122",
+    "username": "AliUser",
+    "password": "ali123"
+  },
+
+    "updateContact": {
+    "newPhone": "31116"
+  }
+}

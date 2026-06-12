@@ -1,0 +1,12 @@
+{
+  "payee": {
+    "name": "John Doe",
+    "street": "123 Test Street",
+    "city": "Dallas",
+    "state": "Texas",
+    "zipCode": "75001",
+    "phone": "1234567890",
+    "accountNumber": "99999"
+  },
+  "amount": "150"
+}
