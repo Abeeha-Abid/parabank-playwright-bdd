@@ -211,7 +211,7 @@ When('I attempt to log in with an empty username and password', async () => {
 Then('I should see an authentication error message {string}', async ({}, expectedError: string) => {
   const errorElement = sharedPage.locator('p.error');
   
-  // ✨ FIX: Accept either the clean validation message OR ParaBank's sandbox fallback error
+  //  FIX: Accept either the clean validation message OR ParaBank's sandbox fallback error
   const errorPattern = new RegExp(`${expectedError}|An internal error has occurred and has been logged`);
   
   await expect(errorElement).toContainText(errorPattern, { timeout: 10000 });
