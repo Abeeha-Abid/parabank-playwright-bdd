@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator, Page, test } from '@playwright/test';
 
 export class RegisterPage {
   readonly page: Page;
@@ -41,31 +41,82 @@ export class RegisterPage {
   }
 
   async navigate(): Promise<void> {
-    await this.page.goto('https://parabank.parasoft.com/parabank/register.htm');
+    await test.step('↳ 🔘 Route browser context to ParaBank Registration portal', async () => {
+      await this.page.goto('https://parabank.parasoft.com/parabank/register.htm');
+    });
   }
 
+  /**
+   * Fills out the entire registration form. 
+   * Every single field now explicitly passes its action and data to the custom dashboard reporter.
+   */
   async registerUser(user: any): Promise<void> {
-    await this.firstNameInput.fill(user.firstName);
-    await this.lastNameInput.fill(user.lastName);
-    await this.streetInput.fill(user.street);
-    await this.cityInput.fill(user.city);
-    await this.stateInput.fill(user.state);
-    await this.zipCodeInput.fill(user.zipCode);
-    await this.phoneInput.fill(user.phone);
-    await this.ssnInput.fill(user.ssn);
-    await this.usernameInput.fill(user.username);
-    await this.passwordInput.fill(user.password);
-    await this.confirmPasswordInput.fill(user.password);
-    await this.registerButton.click();
+    await test.step(`↳ 🔘 Fill out "First Name" with data: "${user.firstName}"`, async () => {
+      await this.firstNameInput.fill(user.firstName);
+    });
+    
+    await test.step(`↳ 🔘 Fill out "Last Name" with data: "${user.lastName}"`, async () => {
+      await this.lastNameInput.fill(user.lastName);
+    });
+    
+    await test.step(`↳ 🔘 Fill out "Street Address" with data: "${user.street}"`, async () => {
+      await this.streetInput.fill(user.street);
+    });
+    
+    await test.step(`↳ 🔘 Fill out "City" with data: "${user.city}"`, async () => {
+      await this.cityInput.fill(user.city);
+    });
+    
+    await test.step(`↳ 🔘 Fill out "State" with data: "${user.state}"`, async () => {
+      await this.stateInput.fill(user.state);
+    });
+    
+    await test.step(`↳ 🔘 Fill out "Zip Code" with data: "${user.zipCode}"`, async () => {
+      await this.zipCodeInput.fill(user.zipCode);
+    });
+    
+    await test.step(`↳ 🔘 Fill out "Phone Number" with data: "${user.phone}"`, async () => {
+      await this.phoneInput.fill(user.phone);
+    });
+    
+    await test.step(`↳ 🔘 Fill out "SSN" with data: "${user.ssn}"`, async () => {
+      await this.ssnInput.fill(user.ssn);
+    });
+    
+    await test.step(`↳ 🔘 Fill out "Username" with data: "${user.username}"`, async () => {
+      await this.usernameInput.fill(user.username);
+    });
+    
+    await test.step(`↳ 🔘 Fill out "Password" with data: "${user.password}"`, async () => {
+      await this.passwordInput.fill(user.password);
+    });
+    
+    await test.step(`↳ 🔘 Fill out "Confirm Password" with data: "${user.password}"`, async () => {
+      await this.confirmPasswordInput.fill(user.password);
+    });
+    
+    await test.step(`↳ 🔘 Click "Register" button`, async () => {
+      await this.registerButton.click();
+    });
   }
 
   async logout(): Promise<void> {
-    await this.logoutLink.click();
+    await test.step('↳ 🔘 Click "Log Out" navigation link', async () => {
+      await this.logoutLink.click();
+    });
   }
 
   async login(username: string, password: string): Promise<void> {
-    await this.loginUsernameInput.fill(username);
-    await this.loginPasswordInput.fill(password);
-    await this.loginButton.click();
+    await test.step(`↳ 🔘 Fill out Login "Username" with data: "${username}"`, async () => {
+      await this.loginUsernameInput.fill(username);
+    });
+
+    await test.step('↳ 🔘 Fill out Login "Password"', async () => {
+      await this.loginPasswordInput.fill(password);
+    });
+
+    await test.step('↳ 🔘 Click "Log In" button', async () => {
+      await this.loginButton.click();
+    });
   }
 }

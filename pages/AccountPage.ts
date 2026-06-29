@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, test } from '@playwright/test';
 
 export class AccountPage {
   private readonly openAccountLink: Locator;
@@ -14,12 +14,12 @@ export class AccountPage {
   private readonly lastNameInput: Locator;
   private readonly updateButton: Locator;
 
-  // NEW: Loan Request Locators
+  // Loan Request Locators
   private readonly requestLoanLink: Locator;
   private readonly loanAmountInput: Locator;
   private readonly downPaymentInput: Locator;
   private readonly applyNowButton: Locator;
-  public readonly loanStatusLabel: Locator; // Public so our test can assert against it
+  public readonly loanStatusLabel: Locator; 
 
   constructor(private readonly page: Page) {
     this.openAccountLink = page.getByRole('link', { name: 'Open New Account' });
@@ -35,7 +35,6 @@ export class AccountPage {
     this.lastNameInput = page.locator('[id="customer.lastName"]');
     this.updateButton = page.getByRole('button', { name: 'Update Profile' });
 
-    // NEW: Initialize Loan Request Locators
     this.requestLoanLink = page.getByRole('link', { name: 'Request Loan' });
     this.loanAmountInput = page.locator('#amount');
     this.downPaymentInput = page.locator('#downPayment');
@@ -43,26 +42,52 @@ export class AccountPage {
     this.loanStatusLabel = page.locator('#loanStatus');
   }
 
-  // --- EXISTING ACTIONS ---
   async openNewAccount(): Promise<void> {
-    await this.openAccountLink.click();
+    await test.step('↳ 🔘 Click "Open New Account" navigation link', async () => {
+      await this.openAccountLink.click();
+    });
+
     await this.fromAccountDropdown.locator('option').first().waitFor({ state: 'attached' });
-    await this.openAccountButton.click();
-    await this.page.getByRole('heading', { name: 'Account Opened!' }).waitFor();
+
+    await test.step('↳ 🔘 Click "Open New Account" confirmation button', async () => {
+      await this.openAccountButton.click();
+    });
+
+    await test.step('↳ 🔘 Verify "Account Opened!" confirmation banner', async () => {
+      await this.page.getByRole('heading', { name: 'Account Opened!' }).waitFor();
+    });
   }
 
   async transferFunds(amount: string, fromIdx: number = 0, toIdx: number = 1): Promise<void> {
-    await this.transferLink.click();
+    await test.step('↳ 🔘 Click "Transfer Funds" navigation link', async () => {
+      await this.transferLink.click();
+    });
+
     await this.toAccountDropdown.locator('option').nth(1).waitFor({ state: 'attached' });
-    await this.amountInput.fill(amount);
-    await this.fromAccountDropdown.selectOption({ index: fromIdx });
-    await this.toAccountDropdown.selectOption({ index: toIdx });
-    await this.transferButton.click();
+    
+    await test.step(`↳ 🔘 Fill out Transfer "Amount" with data: "$${amount}"`, async () => {
+      await this.amountInput.fill(amount);
+    });
+
+    await test.step(`↳ 🔘 Select source account option index [From: ${fromIdx}]`, async () => {
+      await this.fromAccountDropdown.selectOption({ index: fromIdx });
+    });
+
+    await test.step(`↳ 🔘 Select target account option index [To: ${toIdx}]`, async () => {
+      await this.toAccountDropdown.selectOption({ index: toIdx });
+    });
+    
+    await test.step('↳ 🔘 Click "Transfer" confirmation button', async () => {
+      await this.transferButton.click();
+    });
+    
     await this.page.waitForTimeout(1000); 
   }
 
   async viewOverview(): Promise<void> {
-    await this.overviewLink.click();
+    await test.step('↳ 🔘 Click "Accounts Overview" navigation link', async () => {
+      await this.overviewLink.click();
+    });
   }
 
   getAccountBalanceLocator(accountId: string): Locator {
@@ -71,23 +96,42 @@ export class AccountPage {
   }
 
   async findTransactions(): Promise<void> {
-    await this.findTransactionsLink.click();
+    await test.step('↳ 🔘 Click "Find Transactions" navigation link', async () => {
+      await this.findTransactionsLink.click();
+    });
   }
 
   async updateLastName(newName: string): Promise<void> {
-    await this.updateProfileLink.click();
-    await this.lastNameInput.fill(newName);
-    await this.updateButton.click();
+    await test.step('↳ 🔘 Click "Update Contact Info" navigation link', async () => {
+      await this.updateProfileLink.click();
+    });
+    
+    await test.step(`↳ 🔘 Update "Last Name" field with data: "${newName}"`, async () => {
+      await this.lastNameInput.fill(newName);
+    });
+
+    await test.step('↳ 🔘 Click "Update Profile" button', async () => {
+      await this.updateButton.click();
+    });
   }
 
-  // --- NEW: LOAN REQUEST ACTIONS ---
   async goToLoanRequestPage(): Promise<void> {
-    await this.requestLoanLink.click();
+    await test.step('↳ 🔘 Click "Request Loan" navigation link', async () => {
+      await this.requestLoanLink.click();
+    });
   }
 
   async applyForLoan(amount: string, downPayment: string): Promise<void> {
-    await this.loanAmountInput.fill(amount);
-    await this.downPaymentInput.fill(downPayment);
-    await this.applyNowButton.click();
+    await test.step(`↳ 🔘 Fill out "Loan Amount" requested: "$${amount}"`, async () => {
+      await this.loanAmountInput.fill(amount);
+    });
+
+    await test.step(`↳ 🔘 Fill out "Down Payment" allocation: "$${downPayment}"`, async () => {
+      await this.downPaymentInput.fill(downPayment);
+    });
+
+    await test.step('↳ 🔘 Click "Apply Now" submission button', async () => {
+      await this.applyNowButton.click();
+    });
   }
 }

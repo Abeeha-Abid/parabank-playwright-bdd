@@ -2,7 +2,9 @@
   "name": "recordandplayback",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "dashboard": "npx playwright test --grep \"@regression\""
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

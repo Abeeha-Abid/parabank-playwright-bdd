@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import { Locator, Page, test } from '@playwright/test';
 
 export class BillPayPage {
   readonly page: Page;
@@ -30,16 +30,39 @@ export class BillPayPage {
   }
 
   async payBill(payee: any): Promise<void> {
-    await this.billPayLink.click();
-    await this.nameInput.fill(payee.name);
-    await this.streetInput.fill(payee.street);
-    await this.cityInput.fill(payee.city);
-    await this.stateInput.fill(payee.state);
-    await this.zipCodeInput.fill(payee.zipCode);
-    await this.phoneInput.fill(payee.phone);
-    await this.accountInput.fill(payee.account);
-    await this.verifyAccountInput.fill(payee.account);
-    await this.amountInput.fill(payee.amount);
-    await this.sendPaymentButton.click();
+    await test.step('↳ 🔘 Click "Bill Pay" navigation link', async () => {
+      await this.billPayLink.click();
+    });
+
+    await test.step(`↳ 🔘 Fill out Payee "Name" with data: "${payee.name}"`, async () => {
+      await this.nameInput.fill(payee.name);
+    });
+
+    await test.step(`↳ 🔘 Fill out Payee Address "Street" and "City" locations`, async () => {
+      await this.streetInput.fill(payee.street);
+      await this.cityInput.fill(payee.city);
+    });
+
+    await test.step(`↳ 🔘 Fill out Payee "State" with data: "${payee.state}"`, async () => {
+      await this.stateInput.fill(payee.state);
+    });
+
+    await test.step(`↳ 🔘 Fill out Payee Address Contact details ("Zip Code" & "Phone")`, async () => {
+      await this.zipCodeInput.fill(payee.zipCode);
+      await this.phoneInput.fill(payee.phone);
+    });
+
+    await test.step(`↳ 🔘 Fill out Payee "Account Number" with data: "${payee.account}"`, async () => {
+      await this.accountInput.fill(payee.account);
+      await this.verifyAccountInput.fill(payee.account);
+    });
+
+    await test.step(`↳ 🔘 Fill out Bill "Amount" with data: "$${payee.amount}"`, async () => {
+      await this.amountInput.fill(payee.amount);
+    });
+
+    await test.step(`↳ 🔘 Click "Send Payment" submission button`, async () => {
+      await this.sendPaymentButton.click();
+    });
   }
 }
